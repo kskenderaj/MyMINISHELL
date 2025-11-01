@@ -78,6 +78,7 @@ char **parse_line(char *line) {
     int bufsize = MAX_ARGS;
     int position = 0;
     char **tokens = malloc(bufsize * sizeof(char*));
+    char **tokens_backup;
     char *token;
     
     if (!tokens) {
@@ -92,9 +93,11 @@ char **parse_line(char *line) {
         
         if (position >= bufsize) {
             bufsize += MAX_ARGS;
+            tokens_backup = tokens;
             tokens = realloc(tokens, bufsize * sizeof(char*));
             if (!tokens) {
                 fprintf(stderr, "minishell: allocation error\n");
+                free(tokens_backup);
                 exit(1);
             }
         }
